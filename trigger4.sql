@@ -1,0 +1,12 @@
+CREATE TRIGGER UpdateGamesOwned
+ON LIBRARY
+AFTER INSERT, DELETE
+AS
+BEGIN
+    
+    UPDATE USERS
+    SET GamesOwned = (SELECT COUNT(*) 
+                      FROM LIBRARY 
+                      WHERE LIBRARY.UserID = USERS.UserID)
+    WHERE UserID IN (SELECT DISTINCT UserID FROM inserted UNION SELECT DISTINCT UserID FROM deleted);
+END;

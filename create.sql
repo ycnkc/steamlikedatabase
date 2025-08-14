@@ -1,0 +1,55 @@
+CREATE TABLE USERS (
+	UserID VARCHAR(50) PRIMARY KEY,
+	Username VARCHAR(100) NOT NULL,
+	Email VARCHAR(100) UNIQUE NOT NULL,
+	AccountCreationDate DATE NOT NULL
+);
+
+CREATE TABLE GAMES (
+    GameID VARCHAR(10) PRIMARY KEY,
+    Title VARCHAR(100) NOT NULL,
+    Genre VARCHAR(50),
+    Developer VARCHAR(100),
+    Price DECIMAL(5,2),
+    ReleaseDate DATE,
+	CHECK (GameID = UPPER(GameID))
+);
+
+CREATE TABLE LIBRARY (
+    LibraryID VARCHAR(50),
+    UserID VARCHAR(50),
+    GameID VARCHAR(10),
+    Playtime INT,
+    DateAdded DATE,
+    PRIMARY KEY (LibraryID, GameID),
+    FOREIGN KEY (UserID) REFERENCES USERS(UserID),
+    FOREIGN KEY (GameID) REFERENCES GAMES(GameID)
+);
+
+CREATE TABLE WISHLIST (
+    WishlistID VARCHAR(50),
+    UserID VARCHAR(50),
+    GameID VARCHAR(10),
+    DateAdded DATE,
+    PRIMARY KEY (WishlistID, GameID),
+    FOREIGN KEY (UserID) REFERENCES USERS(UserID),
+    FOREIGN KEY (GameID) REFERENCES GAMES(GameID)
+);
+
+CREATE TABLE REVIEWS (
+    ReviewID INT PRIMARY KEY IDENTITY(1,1),
+    UserID VARCHAR(50),
+    GameID VARCHAR(10),
+    ReviewText TEXT,
+    Rating INT CHECK (Rating >= 1 AND Rating <= 10),
+    DateReviewed DATE,
+    FOREIGN KEY (UserID) REFERENCES USERS(UserID),
+    FOREIGN KEY (GameID) REFERENCES GAMES(GameID)
+);
+
+CREATE TABLE ACHIEVEMENTS (
+    AchievementID VARCHAR(10) PRIMARY KEY,
+    GameID VARCHAR(10),
+    Achievement_Name VARCHAR(100),
+    FOREIGN KEY (GameID) REFERENCES GAMES(GameID)
+);

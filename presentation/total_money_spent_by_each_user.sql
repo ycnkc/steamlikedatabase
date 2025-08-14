@@ -1,0 +1,5 @@
+SELECT L.[UserID], SUM(G.[Price]) AS TotalSpent
+FROM LIBRARY L
+JOIN GAMES G ON L.[GameID] = G.[GameID]
+GROUP BY L.[UserID]
+ORDER BY TotalSpent DESC;
